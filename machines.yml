@@ -1,0 +1,27 @@
+---
+- box:
+    vmw: "generic/ubuntu2204"
+    vb: "generic/ubuntu2204"
+    lv: "generic/ubuntu2204"
+  name: kind
+  nested: false
+  nics:
+    - type: "private_network"
+      ip_addr: "192.168.56.200"
+  ram: "16384"
+  sync_disabled: false
+  vcpu: "8"
+  provision:
+    # - type: file
+    #   source: "vm-deploy/hosts"
+    #   destination: "/etc/hosts"
+    - type: shell
+      path: "vm-deploy/k8s-install.sh"
+    - type: shell
+      path:  "vm-deploy/createcluster.sh"
+    - type: shell
+      path:  "vm-deploy/createregistry.sh"
+    - type: shell
+      path:  "vm-deploy/connectregistry.sh" 
+    - type: shell 
+      path:  "vm-deploy/ingress-install.sh"
