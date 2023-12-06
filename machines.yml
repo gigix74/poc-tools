@@ -12,9 +12,9 @@
   sync_disabled: false
   vcpu: "8"
   provision:
-    # - type: file
-    #   source: "vm-deploy/hosts"
-    #   destination: "/etc/hosts"
+    - type: shell
+      path: "vm-deploy/cpfiles.sh"
+      run: allways
     - type: shell
       path: "vm-deploy/k8s-install.sh"
     - type: shell
@@ -25,3 +25,5 @@
       path:  "vm-deploy/connectregistry.sh" 
     - type: shell 
       path:  "vm-deploy/ingress-install.sh"
+    - type: shell
+      path:  "vm-deploy/argocd-install.sh"     

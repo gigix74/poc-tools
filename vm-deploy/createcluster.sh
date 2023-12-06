@@ -1,6 +1,9 @@
 cat <<EOF | kind create cluster --image=kindest/node:v1.21.14 --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  apiServerAddress: "192.168.56.200"
+  apiServerPort: 8443
 containerdConfigPatches:
 - |-
   [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:${reg_port}"]
@@ -22,6 +25,7 @@ nodes:
   - containerPort: 443
     hostPort: 443
     protocol: TCP
+- role: worker
 - role: worker
 - role: worker
 EOF

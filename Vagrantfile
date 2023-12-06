@@ -23,6 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # Configure the VMs per details in machines.yml
     config.vm.define machine['name'] do |srv|
+      srv.vm.network "forwarded_port", guest: 8080, host: 8090, host_ip: "127.0.0.1"
 
       # Don't check for box updates
       srv.vm.box_check_update = false
@@ -76,16 +77,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         end # if machine['nested']
       end # srv.vm.provider 'libvirt'
 
-      # Provision with shell
+      # Provision shell or file
       machine['provision'].each do |prv|
         if prv['type'] == 'shell'
-          srv.vm.provision 'shell', path: prv['path']
-        end #if prv['type']
-
+          if prv['run'] == 'allways'
+            srv.vm.provision 'shell', path: prv['path'], run: 'allways'
+          else
+            srv.vm.provision 'shell', path: prv['path']
+          end # if prv['run']
+        end # if prv['type']
         if prv['type'] == 'file'
           srv.vm.provision 'file', source: prv['source'], destination: prv['destination']
-        end #if prv['type']
-      end
+        end # if prv['type']
+      end # machine['provision'].each
     end # config.vm.define
   end # machines.each
 end # Vagrant.configure

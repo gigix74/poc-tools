@@ -1,0 +1,11 @@
+echo "Password: $(kubectl -n default get secret argocd-secret -o jsonpath="{.data.clearPassword}" | base64 -d)"
+Password: n5X0cMOmKt
+
+argocd login localhost:8080 --username admin --password n5X0cMOmKt
+
+kubectl port-forward --namespace default svc/my-release-argo-cd-server 8080:80 \
+   --address='0.0.0.0' &
+
+   kubectl config get-contexts
+
+argocd cluster add kind-kind --name kind-cluster
